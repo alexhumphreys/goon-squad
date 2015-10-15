@@ -12,7 +12,7 @@
 (defn home-panel []
   [re-com/v-box
    :gap "1em"
-   :children [[home-title] [world-at-time] [draw-all]]])
+   :children [[home-title] [world-at-time]]])
 
 ;; --------------------
 (defn about-title []
@@ -24,19 +24,20 @@
   (into [] (for [x rows]
     [re-com/p x])))
 
+(def w-keys [:price :stockpile :police])
+
 (defn world-at-time []
-  (let [world (re-frame/subscribe [:world])]
+  (let [history (re-frame/subscribe [:history])]
     (fn []
       [re-com/v-box
        :gap "1em"
-       :children (world-list (vals @world))])))
+       :children (draw-all @history)])))
 
-(defn draw-all []
-  (let [history (re-frame/subscribe [:history])]
-    (fn []
-      [re-com/h-box
-       :gap "1em"
-       :children (world-list (map :stockpile @history))])))
+(defn draw-all [history]
+  (into [] (for [k (keys (first history))]
+    [re-com/h-box
+     :gap "1em"
+     :children (world-list (map k history))])))
 
 ;; --------------------
 (defmulti panels identity)
