@@ -1,0 +1,10 @@
+*.iml
+*.jar
+*.log
+.nrepl-*
+.lein-*
+out/
+target/
+resources/public/js/compiled/out/
+compiled*/
+misc/
