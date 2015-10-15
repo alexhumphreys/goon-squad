@@ -9,15 +9,10 @@
    :label (str "Hello" "This is the Home Page.")
    :level :level1])
 
-(defn link-to-about-page []
-  [re-com/hyperlink-href
-   :label "go to About Page"
-   :href "#/about"])
-
 (defn home-panel []
   [re-com/v-box
    :gap "1em"
-   :children [[home-title] [world] ]])
+   :children [[home-title] [world-at-time] [draw-all]]])
 
 ;; --------------------
 (defn about-title []
@@ -25,27 +20,27 @@
    :label "This is the About Page."
    :level :level1])
 
-(defn link-to-home-page []
-  [re-com/hyperlink-href
-   :label "go to Home Page"
-   :href "#/"])  
+(defn world-list [rows]
+  (into [] (for [x rows]
+    [re-com/p x])))
 
-(defn about-panel []
-  [re-com/v-box
-   :gap "1em"
-   :children [[about-title] [link-to-home-page]]])
-
-(defn world []
+(defn world-at-time []
   (let [world (re-frame/subscribe [:world])]
     (fn []
       [re-com/v-box
        :gap "1em"
-       :children [[re-com/p (str "hey")]]])))
+       :children (world-list (vals @world))])))
+
+(defn draw-all []
+  (let [history (re-frame/subscribe [:history])]
+    (fn []
+      [re-com/h-box
+       :gap "1em"
+       :children (world-list (map :stockpile @history))])))
 
 ;; --------------------
 (defmulti panels identity)
 (defmethod panels :home-panel [] [home-panel])
-(defmethod panels :about-panel [] [about-panel])
 (defmethod panels :default [] [:div])
 
 (defn main-panel []

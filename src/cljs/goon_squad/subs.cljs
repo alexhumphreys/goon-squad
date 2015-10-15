@@ -8,6 +8,11 @@
    (reaction (:world @db))))
 
 (re-frame/register-sub
+ :history
+ (fn [db]
+   (reaction (:history @db))))
+
+(re-frame/register-sub
  :active-panel
  (fn [db _]
    (reaction (:active-panel @db))))
