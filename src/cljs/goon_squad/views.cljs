@@ -22,7 +22,8 @@
 
 (defn world-list [rows]
   (into [] (for [x rows]
-    [re-com/p x])))
+    [re-com/box
+      :child (str x)])))
 
 (def w-keys [:price :stockpile :police])
 
