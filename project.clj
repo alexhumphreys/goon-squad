@@ -17,12 +17,6 @@
                                     "test/js" 
                                     "resources/public/css/compiled"]
   
-  :profiles {
-    :dev  {:repl-options {:init-ns goon-squad.core
-                          :nrepl-middleware  [cemerick.piggieback/wrap-cljs-repl]}
-           :dependencies [[weasel "0.7.0"]
-                          [org.clojure/tools.nrepl  "0.2.10"]
-                          [com.cemerick/piggieback  "0.2.1"]]}}
   :garden {:builds [{:id "screen"
                      :source-paths ["src/clj"]
                      :stylesheet goon-squad.css/screen
