@@ -8,3 +8,5 @@ target/
 resources/public/js/compiled/out/
 compiled*/
 misc/
+.lein-repl-history
+.cljs_rhino_repl
