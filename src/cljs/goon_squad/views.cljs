@@ -1,6 +1,7 @@
 (ns goon-squad.views
     (:require [re-frame.core :as re-frame]
               [goon-squad.engine :as engine]
+              [goon-squad.turn :as turn]
               [re-com.core :as re-com]))
 
 ;; --------------------
@@ -12,7 +13,7 @@
 (defn home-panel []
   [re-com/v-box
    :gap "1em"
-   :children [[home-title] [world-at-time]]])
+   :children [[home-title] [world-at-time] [turn/form]]])
 
 ;; --------------------
 (defn about-title []
