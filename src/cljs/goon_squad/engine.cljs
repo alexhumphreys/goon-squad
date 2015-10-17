@@ -7,10 +7,11 @@
   {:a "world"})
 
 (defn stockpile
-  [world actions]
-  4)
+  [world turn]
+  (.log js/console world)
+  (- (:stockpile world) (:sell turn)))
 
 (defn next-state
   [world turn]
-  (.log js/console world)
-  world)
+  (assoc world 
+    :stockpile (stockpile world turn)))

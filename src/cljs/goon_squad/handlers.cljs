@@ -25,7 +25,9 @@
  :turn
   standard-middlewares
  (fn [db [_ turn-values]]
-   (assoc db :history (conj (get-in db [:history]) (engine/next-state (get-in db [:world]) turn-values))
+   (def next-world (engine/next-state (get-in db [:world]) turn-values))
+   (assoc db :history (conj (get-in db [:history]) next-world)
+             :world next-world
              :turn turn-values
              :all-turns (conj (get-in db [:all-turns] ) turn-values))
     ))
