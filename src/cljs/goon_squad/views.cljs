@@ -13,9 +13,13 @@
 
 (defn grid-row [rows]
   (into [] (for [x rows]
+    (if (number? x)
+    [re-com/box
+      :width "20px"
+      :child (str x)]
     [re-com/box
       :width "50px"
-      :child (str x)])))
+      :child (str x)]))))
 
 (defn draw-all [history]
   (if (seq history)
