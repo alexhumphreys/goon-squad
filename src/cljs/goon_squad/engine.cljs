@@ -8,10 +8,14 @@
 
 (defn stockpile
   [world turn]
-  (.log js/console world)
   (- (:stockpile world) (:sell turn)))
+
+(defn money
+  [world turn]
+  (+ (* (:price world) (:sell turn)) (:money world) ))
 
 (defn next-state
   [world turn]
   (assoc world 
-    :stockpile (stockpile world turn)))
+    :stockpile (stockpile world turn)
+    :money (money world turn)))
