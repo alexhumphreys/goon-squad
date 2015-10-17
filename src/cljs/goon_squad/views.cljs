@@ -7,27 +7,24 @@
 ;; --------------------
 (defn home-title []
   [re-com/title
-   :label (str "Hello" "This is the Home Page.")
+   :label "Goon Squad"
    :level :level1])
 
-(defn home-panel []
-  [re-com/v-box
-   :gap "1em"
-   :children [[home-title] [world-at-time] [turn/form] [all-turns]]])
-
-;; --------------------
-(defn about-title []
-  [re-com/title
-   :label "This is the About Page."
-   :level :level1])
-
-(defn world-list [rows]
+(defn grid-row [rows]
   (into [] (for [x rows]
     [re-com/box
       :width "50px"
       :child (str x)])))
 
-(defn world-at-time []
+(defn draw-all [history]
+  (if (seq history)
+  (into [] (for [k (keys (first history))]
+    [re-com/h-box
+     :gap "1em"
+     :children (grid-row (conj (map k history) k))]))
+  [re-com/p]))
+
+(defn world-history []
   (let [history (re-frame/subscribe [:history])]
     (fn []
       [re-com/v-box
@@ -41,13 +38,10 @@
        :gap "1em"
        :children (draw-all @all-turns)])))
 
-(defn draw-all [history]
-  (if (seq history)
-  (into [] (for [k (keys (first history))]
-    [re-com/h-box
-     :gap "1em"
-     :children (world-list (conj (map k history) k))]))
-  [re-com/p]))
+(defn home-panel []
+  [re-com/v-box
+   :gap "1em"
+   :children [[home-title] [world-history] [turn/form] [all-turns]]])
 
 ;; --------------------
 (defmulti panels identity)

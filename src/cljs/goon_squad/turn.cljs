@@ -21,7 +21,7 @@
                    :width     "50px"
                    :on-change #(reset! slider-val (str %))]
                   [re-com/box
-                    :child "sell"]
+                    :child (str "Sell " @slider-val)]
                   [re-com/button
                     :label "Do turn"
                     :on-click #(re-frame/dispatch [:turn {:sell @slider-val} ])]
