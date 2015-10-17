@@ -6,6 +6,7 @@
                  [re-com "0.6.1"]
                  [secretary "1.2.3"]
                  [binaryage/devtools "0.3.0"]
+                 [prismatic/schema "0.4.3"]
                  [garden "1.2.5"]]
 
   :source-paths ["src/clj"]
