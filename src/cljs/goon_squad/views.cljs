@@ -24,7 +24,7 @@
 (defn world-list [rows]
   (into [] (for [x rows]
     [re-com/box
-      :width "20px"
+      :width "50px"
       :child (str x)])))
 
 (defn world-at-time []
@@ -46,7 +46,7 @@
   (into [] (for [k (keys (first history))]
     [re-com/h-box
      :gap "1em"
-     :children (world-list (map k history))]))
+     :children (world-list (conj (map k history) k))]))
   [re-com/p]))
 
 ;; --------------------
