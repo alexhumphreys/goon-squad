@@ -9,3 +9,8 @@
 (defn stockpile
   [world actions]
   4)
+
+(defn next-state
+  [world turn]
+  (.log js/console world)
+  world)

@@ -5,6 +5,7 @@
                  [re-frame "0.4.1"]
                  [re-com "0.6.1"]
                  [secretary "1.2.3"]
+                 [binaryage/devtools "0.3.0"]
                  [garden "1.2.5"]]
 
   :source-paths ["src/clj"]

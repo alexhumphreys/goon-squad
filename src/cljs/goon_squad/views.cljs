@@ -13,7 +13,7 @@
 (defn home-panel []
   [re-com/v-box
    :gap "1em"
-   :children [[home-title] [world-at-time] [turn/form]]])
+   :children [[home-title] [world-at-time] [turn/form] [all-turns]]])
 
 ;; --------------------
 (defn about-title []
@@ -24,9 +24,8 @@
 (defn world-list [rows]
   (into [] (for [x rows]
     [re-com/box
+      :width "20px"
       :child (str x)])))
-
-(def w-keys [:price :stockpile :police])
 
 (defn world-at-time []
   (let [history (re-frame/subscribe [:history])]
@@ -35,11 +34,20 @@
        :gap "1em"
        :children (draw-all @history)])))
 
+(defn all-turns []
+  (let [all-turns (re-frame/subscribe [:all-turns])]
+    (fn []
+      [re-com/v-box
+       :gap "1em"
+       :children (draw-all @all-turns)])))
+
 (defn draw-all [history]
+  (if (seq history)
   (into [] (for [k (keys (first history))]
     [re-com/h-box
      :gap "1em"
-     :children (world-list (map k history))])))
+     :children (world-list (map k history))]))
+  [re-com/p]))
 
 ;; --------------------
 (defmulti panels identity)

@@ -1,6 +1,5 @@
 (ns goon-squad.turn
     (:require [re-frame.core :as re-frame]
-              [goon-squad.engine :as engine]
               [reagent.core :as reagent]
               [re-com.core :as re-com]))
 
@@ -22,4 +21,8 @@
                    :width     "50px"
                    :on-change #(reset! slider-val (str %))]
                   [re-com/box
-                    :child "sell"]]])))
+                    :child "sell"]
+                  [re-com/button
+                    :label "Do turn"
+                    :on-click #(re-frame/dispatch [:turn {:sell @slider-val} ])]
+                    ]])))
