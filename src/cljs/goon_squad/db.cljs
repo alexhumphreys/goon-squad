@@ -4,11 +4,13 @@
 (def starting-values
  {:price {:green 10
           :white 50}
-  :stockpile 10
   :stock {:green 10
           :white 1}
   :police 0
-  :production 1
+  :production {:green 1
+               :white 0}
+  :production-cost {:green 1
+                    :white 10}
   :money 0})
 
 (def default-db
@@ -30,14 +32,15 @@
 (defn pos-int []
   (s/both s/Int (positive %)))
 
+(def goods {:green (pos-int)
+           :white (pos-int)})
+
 (def world-schema 
-  {:price {:green s/Int
-           :white s/Int}
-   :stockpile (pos-int)
-   :police s/Int
-   :stock {:green (pos-int)
-           :white (pos-int)}
-   :production s/Int
+  {:police s/Int
+   :price goods
+   :stock goods
+   :production goods
+   :production-cost goods
    :money (pos-int)})
 
 (def turn-schema 

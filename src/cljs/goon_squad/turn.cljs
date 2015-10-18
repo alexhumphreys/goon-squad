@@ -8,7 +8,7 @@
 
 (def turn-defaults {:sell {:green 0
                            :white 0}
-                    :produce {:green 0
+                    :produce {:green 1
                               :white 0}})
 
 (def data (reagent/atom turn-defaults))
@@ -57,8 +57,15 @@
     (fn []
       [re-com/v-box
        :gap "1em"
-       :children [[item :sell "Green" :green form-data]
-                  [item :sell "White" :white form-data]
+       :children [[re-com/box
+                   :child "Sell"]
+                  [item :sell "Green" :green]
+                  [item :sell "White" :white]
+
+                  [re-com/box
+                   :child "Produce"]
+                  [item :produce "Green" :green]
+                  [item :produce "White" :white]
                   [re-com/button
                    :label "Do turn"
                    :on-click (fn [e] 

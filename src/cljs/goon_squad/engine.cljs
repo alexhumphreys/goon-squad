@@ -12,13 +12,17 @@
 
 (defn stock
   [world turn]
-  (apply merge-with - [(:stock world) (:sell turn)]))
+  (def sold (apply merge-with - [(:stock world) (:sell turn)]))
+  (apply merge-with + [sold (:produce turn)])
+)
 
 (defn money
   [world turn]
-  (+ 
-    (apply + (vals (apply merge-with * [(:price world) (:sell turn)])))
-    (:money world)))
+  (def income (+ 
+                (apply + (vals (apply merge-with * [(:price world) (:sell turn)])))
+                (:money world)))
+  (- income
+    (apply + (vals (apply merge-with * [(:producion-price world) (:produce turn)])))))
 
 (defn next-state
   [world turn]
