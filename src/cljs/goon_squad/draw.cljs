@@ -31,7 +31,7 @@
 
 (defn home-did-update [this]
   (.highcharts (js/$ (reagent/dom-node this))
-  (clj->js ((chart-config)))))
+               (clj->js ((chart-config)))))
 
 (defn home-render []
   (let [history (re-frame/subscribe [:history])]
