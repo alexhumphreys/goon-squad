@@ -6,7 +6,7 @@
           :white 50}
   :stockpile 10
   :stock {:green 10
-          :white 0}
+          :white 1}
   :police 0
   :production 1
   :money 0})
@@ -21,6 +21,7 @@
                  :downtown {:cost 500
                             :production {:green 4
                                          :white 12}}]
+   :all-turns []
    :history [starting-values]})
 
 (defn positive []
