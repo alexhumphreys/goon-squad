@@ -47,7 +47,7 @@
 (defn home-panel []
   [re-com/v-box
    :gap "1em"
-   :children [[home-title] [world-history] [draw/history] [turn/form] [all-turns] [tree/render-tree]]])
+   :children [[home-title] [world-history] [tree/render-tree] [draw/history] [turn/form] [all-turns] ]])
 
 ;; --------------------
 (defmulti panels identity)
