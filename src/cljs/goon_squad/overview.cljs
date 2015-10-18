@@ -7,7 +7,6 @@
 ;; --------------------
 
 (defn get-primary-stats [world]
-  (.log js/console (get world :money))
   (select-keys world [:money]))
 
 (defn primary-stats []

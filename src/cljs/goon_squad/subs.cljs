@@ -13,6 +13,11 @@
    (reaction (:history @db))))
 
 (re-frame/register-sub
+ :territories
+ (fn [db]
+   (reaction (:territories @db))))
+
+(re-frame/register-sub
  :all-turns
  (fn [db]
    (reaction (:all-turns @db))))

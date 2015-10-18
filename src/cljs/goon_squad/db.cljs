@@ -9,9 +9,9 @@
   :police 0
   :production {:green 1
                :white 0}
-  :production-cost {:green 1
-                    :white 10}
-  :money 0})
+  :production-cost {:green 7
+                    :white 25}
+  :money 200})
 
 (def default-db
   {:world starting-values

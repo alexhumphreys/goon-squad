@@ -22,7 +22,7 @@
                 (apply + (vals (apply merge-with * [(:price world) (:sell turn)])))
                 (:money world)))
   (- income
-    (apply + (vals (apply merge-with * [(:producion-price world) (:produce turn)])))))
+    (apply + (vals (apply merge-with * [(:production-cost world) (:produce turn)])))))
 
 (defn next-state
   [world turn]
