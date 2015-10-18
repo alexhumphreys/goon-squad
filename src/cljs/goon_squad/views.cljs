@@ -3,7 +3,7 @@
               [goon-squad.engine :as engine]
               [goon-squad.turn :as turn]
               [goon-squad.draw :as draw]
-              [goon-squad.tree :as tree]
+              [goon-squad.overview :as overview]
               [re-com.core :as re-com]))
 
 ;; --------------------
@@ -47,7 +47,7 @@
 (defn home-panel []
   [re-com/v-box
    :gap "1em"
-   :children [[home-title] [world-history] [tree/render-tree] [draw/history] [turn/form] [all-turns] ]])
+   :children [[home-title] [overview/primary-stats] [world-history] [draw/history] [turn/form] [all-turns] ]])
 
 ;; --------------------
 (defmulti panels identity)

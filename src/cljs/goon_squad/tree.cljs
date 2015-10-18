@@ -40,7 +40,7 @@
           :children (into [[re-com/box :child (str k)]] 
                           [[re-com/v-box :children (draw-map v)]])]))))
 
-(defn render-tree []
+(defn render-tree [m]
   [re-com/v-box
         :width "150px"
-        :children (draw-map test-data)])
+        :children (draw-map m)])
