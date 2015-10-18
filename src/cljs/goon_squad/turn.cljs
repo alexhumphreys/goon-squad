@@ -24,4 +24,4 @@
                    :child (str "Sell " @slider-val)]
                   [re-com/button
                    :label "Do turn"
-                   :on-click #(re-frame/dispatch [:turn {:sell @slider-val}])]]])))
+                   :on-click #(re-frame/dispatch [:turn {:sell (int @slider-val)}])]]])))

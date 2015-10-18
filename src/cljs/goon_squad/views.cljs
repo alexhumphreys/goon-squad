@@ -3,6 +3,7 @@
             [goon-squad.engine :as engine]
             [goon-squad.turn :as turn]
             [goon-squad.draw :as draw]
+            [goon-squad.tree :as tree]
             [goon-squad.overview :as overview]
             [re-com.core :as re-com]))
 
@@ -37,6 +38,13 @@
        :gap "1em"
        :children (draw-all @history)])))
 
+(defn state []
+  (let [world (re-frame/subscribe [:world])]
+    (fn []
+      [re-com/v-box
+       :gap "1em"
+       :children [[tree/render-tree @world]]])))
+
 (defn all-turns []
   (let [all-turns (re-frame/subscribe [:all-turns])]
     (fn []
@@ -47,7 +55,7 @@
 (defn home-panel []
   [re-com/v-box
    :gap "1em"
-   :children [[home-title] [overview/primary-stats] [world-history] [draw/history] [turn/form] [all-turns]]])
+   :children [[home-title] [overview/primary-stats] [state] [turn/form] [all-turns]]])
 
 ;; --------------------
 (defmulti panels identity)
