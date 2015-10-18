@@ -6,7 +6,12 @@
 
 ;; --------------------
 
-(def data (reagent/atom {:green 1 :white 1}))
+(def turn-defaults {:sell {:green 0
+                           :white 0}
+                    :produce {:green 0
+                              :white 0}})
+
+(def data (reagent/atom turn-defaults))
 
 (defn slider [value max turn-type attr]
   [re-com/slider
@@ -26,11 +31,8 @@
        :gap "1em"
        :children [(slider slider-val 0 15 1)]]))))
 
-(defn available-to-sell [stock]
-  (util/map-map stock sell-row))
-
 (defn item [turn-type name attr]
-  (let [slider-val (reagent/atom "1")]
+  (let [world (re-frame/subscribe [:world])]
     (fn []
       [re-com/h-box
        :gap "1em"
@@ -42,27 +44,23 @@
                               [re-com/box
                                :width "20px"
                                :child (str (get-value turn-type attr))]]]
-                  (slider (get-value turn-type attr) 15 turn-type attr)]])))
+                  (slider (get-value turn-type attr) (get-in @world [:stock attr]) turn-type attr)]])))
 
 (defn get-value [turn-type attr]
-  (get-in @data [turn-type attr])
-  (get-in @data [attr])
-  )
+  (get-in @data [turn-type attr]))
 
 (defn set-value [turn-type attr new-value]
-  (assoc-in @data [turn-type attr] new-value)
-  (assoc-in @data [attr] new-value)
-  )
+  (assoc-in @data [turn-type attr] new-value))
 
 (defn form []
   (let [form-data data]
     (fn []
       [re-com/v-box
        :gap "1em"
-       :children [
-                  [item :sell "Green" :green form-data]
+       :children [[item :sell "Green" :green form-data]
                   [item :sell "White" :white form-data]
                   [re-com/button
                    :label "Do turn"
-                   :on-click #(re-frame/dispatch [:complex-turn {:sell @form-data}])]
-]])))
+                   :on-click (fn [e] 
+                               ( re-frame/dispatch [:complex-turn @form-data]
+                               (reset! data turn-defaults)))]]])))
