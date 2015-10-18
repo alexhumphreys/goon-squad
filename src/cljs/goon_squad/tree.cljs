@@ -22,20 +22,25 @@
       [re-com/box
         :child (str v)]]])
 
-(defn render-tree-long [t]
-  (into []
-  (for [[k v] test-data]
-    (if (or (instance? String v) (instance? Long v))
-      (render-leaf k v)
-      (render-tree v)))))
+(defn draw-map [m]
+  (foo m (fn [k v]
+    (if (or (string? v) (number? v))
+      [re-com/h-box
+        :justify :around
+        :children [[re-com/box
+                    :child (str k)]
+                 [re-com/box
+                    :child (str v)]]]
+      [re-com/h-box
+          :justify :around
+          :children (into [[re-com/box :child (str k)]] 
+                          [[re-com/v-box :children (draw-map v)]])]))))
 
 (defn render-tree []
-  (def x (foo test-data (fn [k v]
-    [re-com/box
-        :child (str k)])))
-  (.log js/console x)
-  [re-com/h-box
-        :children x])
+  (def x )
+  [re-com/v-box
+        :width "150px"
+        :children (draw-map test-data)])
 
 (defn render-tree-sim []
  (def x [re-com/box
