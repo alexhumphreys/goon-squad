@@ -8,15 +8,15 @@
 
 (def data (reagent/atom {:green 1 :white 1}))
 
-(defn slider [value min max step attr data]
+(defn slider [value max turn-type attr]
   [re-com/slider
     :model     value
-    :min       min
+    :min       0
     :max       max
-    :step      step
+    :step      1
     :width     "50px"
     :on-change (fn [v] 
-                (reset! data (assoc @data attr v)))]
+                (reset! data (set-value turn-type attr v)))]
 )
 
 (defn sell-row [k v]
@@ -29,7 +29,7 @@
 (defn available-to-sell [stock]
   (util/map-map stock sell-row))
 
-(defn sell-item [name turn-type attr data]
+(defn item [turn-type name attr]
   (let [slider-val (reagent/atom "1")]
     (fn []
       [re-com/h-box
@@ -42,7 +42,7 @@
                               [re-com/box
                                :width "20px"
                                :child (str (get-value turn-type attr))]]]
-                  (slider (get-value turn-type attr) 0 15 1 attr data)]])))
+                  (slider (get-value turn-type attr) 15 turn-type attr)]])))
 
 (defn get-value [turn-type attr]
   (get-in @data [turn-type attr])
@@ -60,8 +60,8 @@
       [re-com/v-box
        :gap "1em"
        :children [
-                  [sell-item "Green" :sell :green form-data]
-                  [sell-item "White" :sell :white form-data]
+                  [item :sell "Green" :green form-data]
+                  [item :sell "White" :white form-data]
                   [re-com/button
                    :label "Do turn"
                    :on-click #(re-frame/dispatch [:complex-turn {:sell @form-data}])]
