@@ -17,12 +17,12 @@
   {:world starting-values
    :commodities [:green
                  :white]
-   :territories [:school {:cost 200
-                          :production {:green 10
-                                       :white 2}}
-                 :downtown {:cost 500
-                            :production {:green 4
-                                         :white 12}}]
+   :territories [{ :school {:cost 200
+                            :production {:green 10
+                                         :white 2}}}
+                 { :downtown {:cost 500
+                              :production {:green 4
+                                           :white 12}}}]
    :all-turns []
    :history [starting-values]})
 

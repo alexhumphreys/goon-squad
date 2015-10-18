@@ -52,6 +52,12 @@
 (defn set-value [turn-type attr new-value]
   (assoc-in @data [turn-type attr] new-value))
 
+(defn territories-list []
+  (let [territories (re-frame/subscribe [:territories])]
+    (into [] (for [territory @territories]
+               [re-com/box :child (str (first (keys territory)))]))
+      ))
+
 (defn form []
   (let [form-data data]
     (fn []
@@ -66,6 +72,11 @@
                    :child "Produce"]
                   [item :produce "Green" :green]
                   [item :produce "White" :white]
+
+                  [re-com/v-box
+                   :gap "1em"
+                   :children ( territories-list)]
+
                   [re-com/button
                    :label "Do turn"
                    :on-click (fn [e] 
