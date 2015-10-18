@@ -45,7 +45,7 @@
 
 (defn form []
   (let [slider-val  (reagent/atom "1")
-        form-data (reagent/atom {})]
+        form-data (reagent/atom {:green 1 :white 1})]
     (fn []
       [re-com/v-box
        :gap "1em"

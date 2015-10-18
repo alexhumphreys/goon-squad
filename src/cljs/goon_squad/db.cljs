@@ -2,13 +2,14 @@
   (:require [schema.core :as s :include-macros true]))
 
 (def starting-values
- {:price 10
-    :stockpile 10
-    :stock {:green 10
-            :white 0}
-    :police 0
-    :production 1
-    :money 0})
+ {:price {:green 10
+          :white 50}
+  :stockpile 10
+  :stock {:green 10
+          :white 0}
+  :police 0
+  :production 1
+  :money 0})
 
 (def default-db
   {:world starting-values
@@ -29,15 +30,19 @@
   (s/both s/Int (positive %)))
 
 (def world-schema 
-  {:price s/Int
+  {:price {:green s/Int
+           :white s/Int}
    :stockpile (pos-int)
    :police s/Int
-   :stock s/Any
+   :stock {:green (pos-int)
+           :white (pos-int)}
    :production s/Int
    :money (pos-int)})
 
 (def turn-schema 
-  {:sell s/Int})
+  ;;{:sell s/Int}
+  s/Any
+  )
 
 (def schema 
   {:world world-schema

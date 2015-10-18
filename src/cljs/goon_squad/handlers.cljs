@@ -39,3 +39,12 @@
    (assoc db :history (conj (get-in db [:history]) next-world)
           :world next-world
           :all-turns (conj (get-in db [:all-turns]) turn-values))))
+
+(re-frame/register-handler
+ :complex-turn
+ check-schema-mw
+ (fn [db [_ turn-values]]
+   (def next-world (engine/next-state (get-in db [:world]) turn-values))
+   (assoc db :history (conj (get-in db [:history]) next-world)
+          :world next-world
+          :all-turns (conj (get-in db [:all-turns]) turn-values))))

@@ -10,12 +10,18 @@
   [world turn]
   (- (:stockpile world) (:sell turn)))
 
+(defn stock
+  [world turn]
+  (apply merge-with - [(:stock world) (:sell turn)]))
+
 (defn money
   [world turn]
-  (+ (* (:price world) (:sell turn)) (:money world)))
+  (+ 
+    (apply + (vals (apply merge-with * [(:price world) (:sell turn)])))
+    (:money world)))
 
 (defn next-state
   [world turn]
   (assoc world 
-         :stockpile (stockpile world turn)
+         :stock (stock world turn)
          :money (money world turn)))
