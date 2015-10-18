@@ -6,6 +6,8 @@
 
 ;; --------------------
 
+(def data (reagent/atom {:green 1 :white 1}))
+
 (defn slider [value min max step attr data]
   [re-com/slider
     :model     value
@@ -43,19 +45,18 @@
                                :child @slider-val]]]
                   (slider slider-val 0 15 1 attr data)]])))
 
+(defn get-value [turn-type attr]
+  (get-in data [turn-type attr]))
+
+(defn set-value [turn-type attr new-value]
+  (assoc-in data [turn-type attr] new-value))
+
 (defn form []
-  (let [slider-val  (reagent/atom "1")
-        form-data (reagent/atom {:green 1 :white 1})]
+  (let [form-data data]
     (fn []
       [re-com/v-box
        :gap "1em"
        :children [
-                  (slider slider-val 0 15 1)
-                  [re-com/box
-                   :child (str "Sell " @slider-val)]
-                  [re-com/button
-                   :label "Do turn"
-                   :on-click #(re-frame/dispatch [:turn {:sell (int @slider-val)}])]
                   [sell-item "Green" :green form-data]
                   [sell-item "White" :white form-data]
                   [re-com/button
