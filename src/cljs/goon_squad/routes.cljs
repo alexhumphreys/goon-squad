@@ -1,10 +1,10 @@
 (ns goon-squad.routes
-    (:require-macros [secretary.core :refer [defroute]])
-    (:import goog.History)
-    (:require [secretary.core :as secretary]
-              [goog.events :as events]
-              [goog.history.EventType :as EventType]
-              [re-frame.core :as re-frame]))
+  (:require-macros [secretary.core :refer [defroute]])
+  (:import goog.History)
+  (:require [secretary.core :as secretary]
+            [goog.events :as events]
+            [goog.history.EventType :as EventType]
+            [re-frame.core :as re-frame]))
 
 (defn hook-browser-navigation! []
   (doto (History.)
@@ -22,8 +22,5 @@
     (re-frame/dispatch [:set-active-panel :home-panel]))
 
   (defroute "/about" []
-    (re-frame/dispatch [:set-active-panel :about-panel]))
-
-
-  ;; --------------------
+    (re-frame/dispatch [:set-active-panel :about-panel]));; --------------------
   (hook-browser-navigation!))

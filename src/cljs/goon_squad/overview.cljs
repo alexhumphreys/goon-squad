@@ -1,8 +1,8 @@
 (ns goon-squad.overview
-    (:require [re-frame.core :as re-frame]
-              [reagent.core :as reagent]
-              [goon-squad.tree :as tree]
-              [re-com.core :as re-com]))
+  (:require [re-frame.core :as re-frame]
+            [reagent.core :as reagent]
+            [goon-squad.tree :as tree]
+            [re-com.core :as re-com]))
 
 ;; --------------------
 

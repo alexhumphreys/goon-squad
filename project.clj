@@ -12,6 +12,7 @@
   :source-paths ["src/clj"]
 
   :plugins [[lein-cljsbuild "1.0.6"]
+            [lein-cljfmt  "0.3.0"]
             [lein-figwheel "0.3.3" :exclusions [cider/cider-nrepl]] 
             [lein-garden "0.2.6"] ]
 

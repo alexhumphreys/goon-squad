@@ -7,15 +7,13 @@
     :stockpile 10
     :police 0
     :production 1
-    :money 0 }
+    :money 0}
    :all-turns []
-   :history [
-             {:price 10
+   :history [{:price 10
               :stockpile 10
               :police 0
               :production 1
-              :money 0 }]})
-
+              :money 0}]})
 
 (defn positive []
   (s/pred #(>= % 0) 'gt-0))
@@ -25,10 +23,10 @@
 
 (def world-schema 
   {:price s/Int
-    :stockpile (pos-int)
-    :police s/Int
-    :production s/Int
-    :money (pos-int) })
+   :stockpile (pos-int)
+   :police s/Int
+   :production s/Int
+   :money (pos-int)})
 
 (def turn-schema 
   {:sell s/Int})

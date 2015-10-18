@@ -1,10 +1,10 @@
 (ns goon-squad.views
-    (:require [re-frame.core :as re-frame]
-              [goon-squad.engine :as engine]
-              [goon-squad.turn :as turn]
-              [goon-squad.draw :as draw]
-              [goon-squad.overview :as overview]
-              [re-com.core :as re-com]))
+  (:require [re-frame.core :as re-frame]
+            [goon-squad.engine :as engine]
+            [goon-squad.turn :as turn]
+            [goon-squad.draw :as draw]
+            [goon-squad.overview :as overview]
+            [re-com.core :as re-com]))
 
 ;; --------------------
 (defn home-title []
@@ -14,21 +14,21 @@
 
 (defn grid-row [rows]
   (into [] (for [x rows]
-    (if (number? x)
-    [re-com/box
-      :width "20px"
-      :child (str x)]
-    [re-com/box
-      :width "50px"
-      :child (str x)]))))
+             (if (number? x)
+               [re-com/box
+                :width "20px"
+                :child (str x)]
+               [re-com/box
+                :width "50px"
+                :child (str x)]))))
 
 (defn draw-all [history]
   (if (seq history)
-  (into [] (for [k (keys (first history))]
-    [re-com/h-box
-     :gap "1em"
-     :children (grid-row (conj (map k history) k))]))
-  [re-com/p]))
+    (into [] (for [k (keys (first history))]
+               [re-com/h-box
+                :gap "1em"
+                :children (grid-row (conj (map k history) k))]))
+    [re-com/p]))
 
 (defn world-history []
   (let [history (re-frame/subscribe [:history])]
@@ -47,7 +47,7 @@
 (defn home-panel []
   [re-com/v-box
    :gap "1em"
-   :children [[home-title] [overview/primary-stats] [world-history] [draw/history] [turn/form] [all-turns] ]])
+   :children [[home-title] [overview/primary-stats] [world-history] [draw/history] [turn/form] [all-turns]]])
 
 ;; --------------------
 (defmulti panels identity)
