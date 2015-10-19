@@ -52,15 +52,25 @@
 (defn set-value [turn-type attr new-value]
   (assoc-in @data [turn-type attr] new-value))
 
+(defn territory [name]
+  (let [x (reagent/atom false)]
+    (.log js/console "no") 
+    [re-com/h-box
+     :gap "1em"
+     :children [[re-com/box :child name]
+    [re-com/checkbox
+     :model x
+     :on-change (fn [v] (.log js/console v) (reset! x v))]]]))
+
 (defn territories-list []
   (let [territories (re-frame/subscribe [:territories])]
-    (into [] (for [territory @territories]
-               [re-com/box :child (str (first (keys territory)))]))
-      ))
+    (for [x @territories]
+      (territory (str (first (keys x)))))))
 
 (defn form []
   (let [form-data data]
     (fn []
+      (.log js/console (territories-list)) 
       [re-com/v-box
        :gap "1em"
        :children [[re-com/box
@@ -75,7 +85,7 @@
 
                   [re-com/v-box
                    :gap "1em"
-                   :children ( territories-list)]
+                   :children [(territories-list) ]]
 
                   [re-com/button
                    :label "Do turn"
