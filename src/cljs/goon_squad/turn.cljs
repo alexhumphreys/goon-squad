@@ -9,7 +9,8 @@
 (def turn-defaults {:sell {:green 0
                            :white 0}
                     :produce {:green 1
-                              :white 0}})
+                              :white 0}
+                    :territories (set nil)})
 
 (def data (reagent/atom turn-defaults))
 
@@ -21,7 +22,7 @@
     :step      1
     :width     "50px"
     :on-change (fn [v] 
-                (reset! data (set-value turn-type attr v)))]
+                (reset! data (set-value v turn-type attr)))]
 )
 
 (defn sell-row [k v]
@@ -46,11 +47,18 @@
                                :child (str (get-value turn-type attr))]]]
                   (slider (get-value turn-type attr) (get-in @world [:stock attr]) turn-type attr)]])))
 
-(defn get-value [turn-type attr]
-  (get-in @data [turn-type attr]))
+(defn get-value 
+  ([turn-type attr]
+    (get-in @data [turn-type attr]))
+  ([attr]
+    (get @data attr)))
 
-(defn set-value [turn-type attr new-value]
-  (assoc-in @data [turn-type attr] new-value))
+(defn set-value 
+  ([new-value turn-type attr]
+    (assoc-in @data [turn-type attr] new-value))
+  ([new-value turn-type]
+    (assoc @data turn-type new-value))
+  )
 
 (defn territory [name]
   (let [x (reagent/atom false)]
@@ -60,7 +68,11 @@
      :children [[re-com/box :child name]
     [re-com/checkbox
      :model x
-     :on-change (fn [v] (.log js/console v) (reset! x v))]]]))
+     :on-change (fn [v]
+                  (reset! x v)
+                  (if v
+                    (reset! data (set-value (conj (get-value :territories) name) :territories))
+                    (reset! data (set-value (disj (get-value :territories) name) :territories))))]]]))
 
 (defn territories-list []
   (let [territories (re-frame/subscribe [:territories])]
