@@ -10,7 +10,7 @@
 ;; --------------------
 (defn home-title []
   [re-com/title
-   :label "Goon Squad"
+   :label "GS"
    :level :level1])
 
 (defn grid-row [rows]
