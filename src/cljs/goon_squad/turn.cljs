@@ -61,28 +61,22 @@
   )
 
 (defn territory [name]
-  (let [x (reagent/atom false)]
-    (.log js/console "no") 
-    [re-com/h-box
-     :gap "1em"
-     :children [[re-com/box :child name]
-    [re-com/checkbox
-     :model x
-     :on-change (fn [v]
-                  (reset! x v)
-                  (if v
-                    (reset! data (set-value (conj (get-value :territories) name) :territories))
-                    (reset! data (set-value (disj (get-value :territories) name) :territories))))]]]))
-
-(defn territories-list []
-  (let [territories (re-frame/subscribe [:territories])]
-    (for [x @territories]
-      (territory (str (first (keys x)))))))
+  (let [form-data data]
+    (fn []
+      [re-com/h-box
+       :gap "1em"
+       :children [
+                  [re-com/box :child (str name)]
+                   [re-com/checkbox
+                   :model (contains? (:territories @form-data) name)
+                   :on-change (fn [v]
+                                (if v
+                                  (reset! form-data (set-value (conj (get-value :territories) name) :territories))
+                                  (reset! form-data (set-value (disj (get-value :territories) name) :territories))))]]])))
 
 (defn form []
   (let [form-data data]
     (fn []
-      (.log js/console (territories-list)) 
       [re-com/v-box
        :gap "1em"
        :children [[re-com/box
@@ -97,7 +91,7 @@
 
                   [re-com/v-box
                    :gap "1em"
-                   :children [(territories-list) ]]
+                   :children [[territory :school] [territory :downtown]]]
 
                   [re-com/button
                    :label "Do turn"
