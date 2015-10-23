@@ -11,6 +11,7 @@
                :white 0}
   :production-cost {:green 7
                     :white 25}
+  :territories []
   :money 200})
 
 (def default-db
@@ -41,6 +42,7 @@
    :stock goods
    :production goods
    :production-cost goods
+   :territories s/Any
    :money (pos-int)})
 
 (def turn-schema 
