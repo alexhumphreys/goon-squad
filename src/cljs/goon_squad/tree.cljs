@@ -32,7 +32,7 @@
   (map-map m (fn [k v]
                (cond
                  (or (string? v) (number? v)) (draw-leaf k v)
-                 (vector? v) [re-com/h-box
+                 (set? v) [re-com/h-box
                               :justify :around
                               :children [[re-com/box :child (str k)] (draw-vector v)]]
                  :else [re-com/h-box

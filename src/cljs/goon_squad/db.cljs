@@ -11,7 +11,7 @@
                :white 0}
   :production-cost {:green 7
                     :white 25}
-  :territories []
+  :territories (set [])
   :money 200})
 
 (def default-db

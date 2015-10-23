@@ -16,6 +16,11 @@
   (apply merge-with + [sold (:produce turn)])
 )
 
+(defn territories
+  [world turn]
+  (reduce merge (:territories world) (:territories turn))
+)
+
 (defn money
   [world turn]
   (def income (+ 
@@ -28,4 +33,5 @@
   [world turn]
   (assoc world 
          :stock (stock world turn)
+         :territories (territories world turn)
          :money (money world turn)))
