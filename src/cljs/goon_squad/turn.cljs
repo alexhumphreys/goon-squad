@@ -73,7 +73,7 @@
                                   (reset! data (set-value (disj (get-value :territories) name) :territories))))]]])
 
 (defn territories-form [territories world]
-  (def all-territories (set (for [t @territories] (first (keys t)))))
+  (def all-territories (set (for [t @territories] (:name t))))
   (def current-territories (:territories @world))
   (def available-territories (remove current-territories all-territories))
   (for [p available-territories] [territory p]))
