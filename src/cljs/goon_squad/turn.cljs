@@ -61,16 +61,15 @@
                   (slider (get-value turn-type attr) (get-in @world [:stock attr]) turn-type attr)]])))
 
 (defn territory [name]
-      [re-com/h-box
-       :gap "1em"
-       :children [
-                  [re-com/box :child (str name)]
-                  [re-com/checkbox
-                   :model (contains? (:territories @data) name)
-                   :on-change (fn [v]
-                                (if v
-                                  (reset! data (set-value (conj (get-value :territories) name) :territories))
-                                  (reset! data (set-value (disj (get-value :territories) name) :territories))))]]])
+  [re-com/h-box
+   :gap "1em"
+   :children [[re-com/box :child (str name)]
+              [re-com/checkbox
+               :model (contains? (:territories @data) name)
+               :on-change (fn [v]
+                            (if v
+                              (reset! data (set-value (conj (get-value :territories) name) :territories))
+                              (reset! data (set-value (disj (get-value :territories) name) :territories))))]]])
 
 (defn territories-form [territories world]
   (def all-territories (set (for [t @territories] (:name t))))
