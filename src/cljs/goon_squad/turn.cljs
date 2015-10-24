@@ -14,6 +14,19 @@
 
 (def data (reagent/atom turn-defaults))
 
+(defn get-value
+  ([turn-type attr]
+    (get-in @data [turn-type attr]))
+  ([attr]
+    (get @data attr)))
+
+(defn set-value
+  ([new-value turn-type attr]
+    (assoc-in @data [turn-type attr] new-value))
+  ([new-value turn-type]
+    (assoc @data turn-type new-value))
+  )
+
 (defn slider [value max turn-type attr]
   [re-com/slider
     :model     value
@@ -47,19 +60,6 @@
                                :child (str (get-value turn-type attr))]]]
                   (slider (get-value turn-type attr) (get-in @world [:stock attr]) turn-type attr)]])))
 
-(defn get-value 
-  ([turn-type attr]
-    (get-in @data [turn-type attr]))
-  ([attr]
-    (get @data attr)))
-
-(defn set-value 
-  ([new-value turn-type attr]
-    (assoc-in @data [turn-type attr] new-value))
-  ([new-value turn-type]
-    (assoc @data turn-type new-value))
-  )
-
 (defn territory [name]
   (let [form-data data]
     (fn []
@@ -74,8 +74,15 @@
                                   (reset! form-data (set-value (conj (get-value :territories) name) :territories))
                                   (reset! form-data (set-value (disj (get-value :territories) name) :territories))))]]])))
 
+(defn territories-form [territories]
+  (def places (for [t territories] (first (keys t))))
+    (for [p places] [territory p]))
+
+
 (defn form []
-  (let [form-data data]
+  (let [form-data data
+        world (re-frame/subscribe [:world])
+        territories (re-frame/subscribe [:territories])]
     (fn []
       [re-com/v-box
        :gap "1em"
@@ -91,7 +98,7 @@
 
                   [re-com/v-box
                    :gap "1em"
-                   :children [[territory :school] [territory :downtown]]]
+                   :children (territories-form @territories)]
 
                   [re-com/button
                    :label "Do turn"
