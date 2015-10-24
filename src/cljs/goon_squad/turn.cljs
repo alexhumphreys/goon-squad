@@ -45,9 +45,10 @@
        :gap "1em"
        :children [(slider slider-val 0 15 1)]]))))
 
-(defn item [turn-type name attr]
+(defn item [turn-type name attr max]
   (let [world (re-frame/subscribe [:world])]
     (fn []
+      (.log js/console (get-in @world max))
       [re-com/h-box
        :gap "1em"
        :children [
@@ -58,23 +59,23 @@
                               [re-com/box
                                :width "20px"
                                :child (str (get-value turn-type attr))]]]
-                  (slider (get-value turn-type attr) (get-in @world [:stock attr]) turn-type attr)]])))
+                  (slider (get-value turn-type attr) (get-in @world max) turn-type attr)]])))
 
-(defn territory [name]
+(defn territory [t]
   [re-com/h-box
    :gap "1em"
-   :children [[re-com/box :child (str name)]
+   :children [[re-com/box :child (str (:name t))]
               [re-com/checkbox
-               :model (contains? (:territories @data) name)
+               :model (contains? (:territories @data) (:name t))
                :on-change (fn [v]
                             (if v
-                              (reset! data (set-value (conj (get-value :territories) name) :territories))
-                              (reset! data (set-value (disj (get-value :territories) name) :territories))))]]])
+                              (reset! data (set-value (conj (get-value :territories) (:name t)) :territories))
+                              (reset! data (set-value (disj (get-value :territories) (:name t)) :territories))))]]])
 
 (defn territories-form [territories world]
   (def all-territories (set (for [t @territories] (:name t))))
   (def current-territories (:territories @world))
-  (def available-territories (remove current-territories all-territories))
+  (def available-territories (filter #(not ( contains? current-territories (:name %))) @territories))
   (for [p available-territories] [territory p]))
 
 
@@ -87,13 +88,13 @@
        :gap "1em"
        :children [[re-com/box
                    :child "Sell"]
-                  [item :sell "Green" :green]
-                  [item :sell "White" :white]
+                  [item :sell "Green" :green [:stock :green]]
+                  [item :sell "White" :white  [:stock :white]]
 
                   [re-com/box
                    :child "Produce"]
-                  [item :produce "Green" :green]
-                  [item :produce "White" :white]
+                  [item :produce "Green" :green [:production :green]]
+                  [item :produce "White" :white [:production :white]]
 
                   [re-com/v-box
                    :gap "1em"
