@@ -10,6 +10,8 @@
                            :white 0}
                     :produce {:green 1
                               :white 0}
+                    :increase-production {:green 0
+                              :white 0}
                     :territories (set nil)})
 
 (def data (reagent/atom turn-defaults))
@@ -48,7 +50,6 @@
 (defn item [turn-type name attr max]
   (let [state (re-frame/subscribe [:state])]
     (fn []
-      (.log js/console (get-in @state max))
       [re-com/h-box
        :gap "1em"
        :children [
@@ -59,7 +60,7 @@
                               [re-com/box
                                :width "20px"
                                :child (str (get-value turn-type attr))]]]
-                  (slider (get-value turn-type attr) (get-in @state max) turn-type attr)]])))
+                  (slider (get-value turn-type attr) (max) turn-type attr)]])))
 
 (defn territory [t]
   [re-com/h-box
@@ -78,22 +79,34 @@
   (def available-territories (filter #(not ( contains? current-territories (:name %))) territories))
   (for [p available-territories] [territory p]))
 
+(defn max-production [commodity state constants]
+  (def current-territory-keys (:territories state))
+  (def current-territories (filter #(contains? current-territory-keys (:name %)) (:territories constants)))
+  (def result  (first (map commodity (map :production current-territories))))
+  (or result 0))
+
 (defn form []
   (let [form-data data
         state (re-frame/subscribe [:state])
         constants (re-frame/subscribe [:constants])]
     (fn []
+      (.log js/console (max-production :green @state @constants))
       [re-com/v-box
        :gap "1em"
        :children [[re-com/box
                    :child "Sell"]
-                  [item :sell "Green" :green [:stock :green]]
-                  [item :sell "White" :white  [:stock :white]]
+                  [item :sell "Green" :green #(get-in @state [:stock :green])]
+                  [item :sell "White" :white #(get-in @state [:stock :white])]
 
                   [re-com/box
                    :child "Produce"]
-                  [item :produce "Green" :green [:production :green]]
-                  [item :produce "White" :white [:production :white]]
+                  [item :produce "Green" :green #(get-in @state [:production :green])]
+                  [item :produce "White" :white #(get-in @state [:production :white])]
+
+                  [re-com/box
+                   :child "Increase production"]
+                  [item :increase-production "Green" :green #(max-production :green @state @constants)]
+                  [item :increase-production "White" :white #(max-production :white @state @constants)]
 
                   [re-com/v-box
                    :gap "1em"
