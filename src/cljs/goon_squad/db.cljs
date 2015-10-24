@@ -24,7 +24,7 @@
                               :cost 200
                               :locations (set [:school])
                               :production {:green 10
-                                           :white 2}}
+                                           :white 3}}
                              {:name :district2
                               :cost 500
                               :production {:green 4

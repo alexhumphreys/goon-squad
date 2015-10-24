@@ -82,7 +82,7 @@
 (defn max-production [commodity state constants]
   (def current-territory-keys (:territories state))
   (def current-territories (filter #(contains? current-territory-keys (:name %)) (:territories constants)))
-  (def maximum (first (map commodity (map :production current-territories))))
+  (def maximum (reduce + (map commodity (map :production current-territories))))
   (def current (commodity (:production state)))
   (or (- maximum current) 0))
 
@@ -91,7 +91,7 @@
         state (re-frame/subscribe [:state])
         constants (re-frame/subscribe [:constants])]
     (fn []
-      (.log js/console (max-production :green @state @constants))
+      (.log js/console (max-production :white @state @constants))
       [re-com/v-box
        :gap "1em"
        :children [[re-com/box
