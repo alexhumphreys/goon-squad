@@ -74,24 +74,28 @@
                               (reset! data (set-value (disj (get-value :territories) (:name t)) :territories))))]]])
 
 (defn territories-form [territories state]
-  (def all-territories (set (for [t territories] (:name t))))
   (def current-territories (:territories state))
   (def available-territories (filter #(not ( contains? current-territories (:name %))) territories))
+  (.log js/console current-territories)
+  (.log js/console available-territories)
   (for [p available-territories] [territory p]))
 
 (defn max-production [commodity state constants]
   (def current-territory-keys (:territories state))
   (def current-territories (filter #(contains? current-territory-keys (:name %)) (:territories constants)))
   (def maximum (reduce + (map commodity (map :production current-territories))))
+  (.log js/console maximum)
   (def current (commodity (:production state)))
-  (or (- maximum current) 0))
+  (if (= maximum 0)
+    0
+    (or (- maximum current) 0)))
 
 (defn form []
   (let [form-data data
         state (re-frame/subscribe [:state])
         constants (re-frame/subscribe [:constants])]
     (fn []
-      (.log js/console (max-production :white @state @constants))
+      (.log js/console (max-production :green @state @constants))
       [re-com/v-box
        :gap "1em"
        :children [[re-com/box
