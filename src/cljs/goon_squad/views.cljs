@@ -31,7 +31,7 @@
                 :children (grid-row (conj (map k history) k))]))
     [re-com/p]))
 
-(defn world-history []
+(defn state-history []
   (let [history (re-frame/subscribe [:history])]
     (fn []
       [re-com/v-box
@@ -39,11 +39,11 @@
        :children (draw-all @history)])))
 
 (defn state []
-  (let [world (re-frame/subscribe [:world])]
+  (let [state (re-frame/subscribe [:state])]
     (fn []
       [re-com/v-box
        :gap "1em"
-       :children [[tree/render-tree @world]]])))
+       :children [[tree/render-tree @state]]])))
 
 (defn all-turns []
   (let [all-turns (re-frame/subscribe [:all-turns])]

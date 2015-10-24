@@ -46,9 +46,9 @@
        :children [(slider slider-val 0 15 1)]]))))
 
 (defn item [turn-type name attr max]
-  (let [world (re-frame/subscribe [:world])]
+  (let [state (re-frame/subscribe [:state])]
     (fn []
-      (.log js/console (get-in @world max))
+      (.log js/console (get-in @state max))
       [re-com/h-box
        :gap "1em"
        :children [
@@ -59,7 +59,7 @@
                               [re-com/box
                                :width "20px"
                                :child (str (get-value turn-type attr))]]]
-                  (slider (get-value turn-type attr) (get-in @world max) turn-type attr)]])))
+                  (slider (get-value turn-type attr) (get-in @state max) turn-type attr)]])))
 
 (defn territory [t]
   [re-com/h-box
@@ -72,17 +72,16 @@
                               (reset! data (set-value (conj (get-value :territories) (:name t)) :territories))
                               (reset! data (set-value (disj (get-value :territories) (:name t)) :territories))))]]])
 
-(defn territories-form [territories world]
-  (def all-territories (set (for [t @territories] (:name t))))
-  (def current-territories (:territories @world))
-  (def available-territories (filter #(not ( contains? current-territories (:name %))) @territories))
+(defn territories-form [territories state]
+  (def all-territories (set (for [t territories] (:name t))))
+  (def current-territories (:territories state))
+  (def available-territories (filter #(not ( contains? current-territories (:name %))) territories))
   (for [p available-territories] [territory p]))
-
 
 (defn form []
   (let [form-data data
-        world (re-frame/subscribe [:world])
-        territories (re-frame/subscribe [:territories])]
+        state (re-frame/subscribe [:state])
+        constants (re-frame/subscribe [:constants])]
     (fn []
       [re-com/v-box
        :gap "1em"
@@ -98,7 +97,7 @@
 
                   [re-com/v-box
                    :gap "1em"
-                   :children (territories-form territories world)]
+                   :children (territories-form (:territories @constants) @state)]
 
                   [re-com/button
                    :label "Do turn"

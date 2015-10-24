@@ -3,35 +3,32 @@
             [re-com.core :as re-com]))
 
 ;; --------------------
-(def world
-  {:a "world"})
-
 (defn stockpile
-  [world turn]
-  (- (:stockpile world) (:sell turn)))
+  [state turn]
+  (- (:stockpile state) (:sell turn)))
 
 (defn stock
-  [world turn]
-  (def sold (apply merge-with - [(:stock world) (:sell turn)]))
+  [state turn]
+  (def sold (apply merge-with - [(:stock state) (:sell turn)]))
   (apply merge-with + [sold (:produce turn)])
 )
 
 (defn territories
-  [world turn]
-  (reduce merge (:territories world) (:territories turn))
+  [state turn]
+  (reduce merge (:territories state) (:territories turn))
 )
 
 (defn money
-  [world turn]
+  [state turn]
   (def income (+ 
-                (apply + (vals (apply merge-with * [(:price world) (:sell turn)])))
-                (:money world)))
+                (apply + (vals (apply merge-with * [(:price state) (:sell turn)])))
+                (:money state)))
   (- income
-    (apply + (vals (apply merge-with * [(:production-cost world) (:produce turn)])))))
+    (apply + (vals (apply merge-with * [(:production-cost state) (:produce turn)])))))
 
 (defn next-state
-  [world turn]
-  (assoc world 
-         :stock (stock world turn)
-         :territories (territories world turn)
-         :money (money world turn)))
+  [state turn]
+  (assoc state 
+         :stock (stock state turn)
+         :territories (territories state turn)
+         :money (money state turn)))

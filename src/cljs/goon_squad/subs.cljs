@@ -3,9 +3,9 @@
   (:require [re-frame.core :as re-frame]))
 
 (re-frame/register-sub
- :world
+ :state
  (fn [db]
-   (reaction (:world @db))))
+   (reaction (:state @db))))
 
 (re-frame/register-sub
  :history
@@ -13,9 +13,9 @@
    (reaction (:history @db))))
 
 (re-frame/register-sub
- :territories
+ :constants
  (fn [db]
-   (reaction (:territories @db))))
+   (reaction (:constants @db))))
 
 (re-frame/register-sub
  :all-turns

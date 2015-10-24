@@ -9,25 +9,25 @@
   :police 0
   :production {:green 1
                :white 0}
-  :production-cost {:green 7
-                    :white 25}
   :territories (set [])
   :money 200})
 
 (def default-db
-  {:world starting-values
-   :commodities [:green
-                 :white]
-   :territories [{:name :district1
-                  :cost 200
-                  :locations (set [:school])
-                  :production {:green 10
-                               :white 2}}
-                 {:name :district2
-                  :cost 500
-                  :production {:green 4
-                               :white 12}
-                  :locations (set [:school :cbd])}]
+  {:state starting-values
+   :constants {:commodities [:green
+                             :white]
+               :production-cost {:green 7
+                                :white 25}
+               :territories [{:name :district1
+                              :cost 200
+                              :locations (set [:school])
+                              :production {:green 10
+                                           :white 2}}
+                             {:name :district2
+                              :cost 500
+                              :production {:green 4
+                                           :white 12}
+                              :locations (set [:school :cbd])}]}
    :all-turns []
    :history [starting-values]})
 
@@ -40,12 +40,11 @@
 (def goods {:green (pos-int)
            :white (pos-int)})
 
-(def world-schema 
+(def state-schema 
   {:police s/Int
    :price goods
    :stock goods
    :production goods
-   :production-cost goods
    :territories s/Any
    :money (pos-int)})
 
@@ -55,9 +54,8 @@
   )
 
 (def schema 
-  {:world world-schema
+  {:state state-schema
    (s/optional-key :all-turns) [turn-schema]
-   :commodities s/Any
-   :territories s/Any
+   :constants s/Any
    (s/optional-key :active-panel) s/Keyword
-   :history [world-schema]})
+   :history [state-schema]})

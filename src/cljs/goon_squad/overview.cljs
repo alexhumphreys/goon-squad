@@ -6,12 +6,12 @@
 
 ;; --------------------
 
-(defn get-primary-stats [world]
-  (select-keys world [:money]))
+(defn get-primary-stats [state]
+  (select-keys state [:money]))
 
 (defn primary-stats []
-  (let [world (re-frame/subscribe [:world])]
+  (let [state (re-frame/subscribe [:state])]
     (fn []
       [re-com/h-box
        :gap "1em"
-       :children [[tree/render-tree (get-primary-stats @world)]]])))
+       :children [[tree/render-tree (get-primary-stats @state)]]])))
