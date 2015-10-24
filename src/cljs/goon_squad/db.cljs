@@ -10,14 +10,16 @@
   :production {:green 1
                :white 0}
   :territories (set [])
-  :money 200})
+  :money 310})
 
 (def default-db
   {:state starting-values
    :constants {:commodities [:green
                              :white]
                :production-cost {:green 7
-                                :white 25}
+                                 :white 25}
+               :increase-production-cost {:green 20
+                                          :white 40}
                :territories [{:name :district1
                               :cost 200
                               :locations (set [:school])

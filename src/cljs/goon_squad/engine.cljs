@@ -27,11 +27,19 @@
   (def districts-cost (reduce + (map :cost districts)))
   (- income
     (apply + (vals (apply merge-with * [(:production-cost constants) (:produce turn)])))
-    districts-cost))
+    districts-cost
+    (increase-production-cost constants turn)))
+
+(defn increase-production-cost [constants turn]
+    (apply + (vals (apply merge-with * [(:increase-production-cost constants) (:increase-production turn)]))))
+
+(defn production [state turn]
+  (apply merge-with + [(:production state) (:increase-production turn)]))
 
 (defn next-state
   [state constants turn]
   (assoc state 
          :stock (stock state turn)
          :territories (territories state turn)
+         :production (production state turn)
          :money (money state constants turn)))

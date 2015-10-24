@@ -82,8 +82,9 @@
 (defn max-production [commodity state constants]
   (def current-territory-keys (:territories state))
   (def current-territories (filter #(contains? current-territory-keys (:name %)) (:territories constants)))
-  (def result  (first (map commodity (map :production current-territories))))
-  (or result 0))
+  (def maximum (first (map commodity (map :production current-territories))))
+  (def current (commodity (:production state)))
+  (or (- maximum current) 0))
 
 (defn form []
   (let [form-data data
