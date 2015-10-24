@@ -44,7 +44,7 @@
  :complex-turn
  check-schema-mw
  (fn [db [_ turn-values]]
-   (def next-state (engine/next-state (get-in db [:state]) turn-values))
+   (def next-state (engine/next-state (get-in db [:state]) (get-in db [:constants]) turn-values))
    (assoc db :history (conj (get-in db [:history]) next-state)
           :state next-state
           :all-turns (conj (get-in db [:all-turns]) turn-values))))

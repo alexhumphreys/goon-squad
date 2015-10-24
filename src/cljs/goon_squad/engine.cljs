@@ -19,16 +19,19 @@
 )
 
 (defn money
-  [state turn]
+  [state constants turn]
   (def income (+ 
                 (apply + (vals (apply merge-with * [(:price state) (:sell turn)])))
                 (:money state)))
+  (def districts (filter #(contains? (:territories turn) (:name %)) (:territories constants)))
+  (def districts-cost (reduce + (map :cost districts)))
   (- income
-    (apply + (vals (apply merge-with * [(:production-cost state) (:produce turn)])))))
+    (apply + (vals (apply merge-with * [(:production-cost constants) (:produce turn)])))
+    districts-cost))
 
 (defn next-state
-  [state turn]
+  [state constants turn]
   (assoc state 
          :stock (stock state turn)
          :territories (territories state turn)
-         :money (money state turn)))
+         :money (money state constants turn)))
