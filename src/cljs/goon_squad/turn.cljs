@@ -61,22 +61,22 @@
                   (slider (get-value turn-type attr) (get-in @world [:stock attr]) turn-type attr)]])))
 
 (defn territory [name]
-  (let [form-data data]
-    (fn []
       [re-com/h-box
        :gap "1em"
        :children [
                   [re-com/box :child (str name)]
-                   [re-com/checkbox
-                   :model (contains? (:territories @form-data) name)
+                  [re-com/checkbox
+                   :model (contains? (:territories @data) name)
                    :on-change (fn [v]
                                 (if v
-                                  (reset! form-data (set-value (conj (get-value :territories) name) :territories))
-                                  (reset! form-data (set-value (disj (get-value :territories) name) :territories))))]]])))
+                                  (reset! data (set-value (conj (get-value :territories) name) :territories))
+                                  (reset! data (set-value (disj (get-value :territories) name) :territories))))]]])
 
-(defn territories-form [territories]
-  (def places (for [t territories] (first (keys t))))
-    (for [p places] [territory p]))
+(defn territories-form [territories world]
+  (def all-territories (set (for [t @territories] (first (keys t)))))
+  (def current-territories (:territories @world))
+  (def available-territories (remove current-territories all-territories))
+  (for [p available-territories] [territory p]))
 
 
 (defn form []
@@ -98,7 +98,7 @@
 
                   [re-com/v-box
                    :gap "1em"
-                   :children (territories-form @territories)]
+                   :children (territories-form territories world)]
 
                   [re-com/button
                    :label "Do turn"
