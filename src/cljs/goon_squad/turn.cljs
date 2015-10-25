@@ -2,6 +2,7 @@
   (:require [re-frame.core :as re-frame]
             [reagent.core :as reagent]
             [goon-squad.util :as util]
+            [goon-squad.engine :as engine]
             [re-com.core :as re-com]))
 
 ;; --------------------
@@ -84,11 +85,15 @@
   (def current-territory-keys (:territories state))
   (def current-territories (filter #(contains? current-territory-keys (:name %)) (:territories constants)))
   (def maximum (reduce + (map commodity (map :production current-territories))))
-  (.log js/console maximum)
   (def current (commodity (:production state)))
   (if (= maximum 0)
     0
     (or (- maximum current) 0)))
+
+(defn turn-cost [constants form-data]
+  [re-com/box
+   :child (str (engine/turn-costs @constants @form-data))]
+  )
 
 (defn form []
   (let [form-data data
@@ -99,6 +104,10 @@
       [re-com/v-box
        :gap "1em"
        :children [[re-com/box
+                   :child "cost"]
+                  (turn-cost constants form-data)
+
+                  [re-com/box
                    :child "Sell"]
                   [item :sell "Green" :green #(get-in @state [:stock :green])]
                   [item :sell "White" :white #(get-in @state [:stock :white])]
