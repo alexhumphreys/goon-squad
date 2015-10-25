@@ -95,17 +95,24 @@
    :child (str (engine/turn-costs @constants @form-data))]
   )
 
+(defn turn-income [state form-data]
+  [re-com/box
+   :child (str (engine/turn-income @state @form-data))]
+  )
+
 (defn form []
   (let [form-data data
         state (re-frame/subscribe [:state])
         constants (re-frame/subscribe [:constants])]
     (fn []
-      (.log js/console (max-production :green @state @constants))
       [re-com/v-box
        :gap "1em"
        :children [[re-com/box
                    :child "cost"]
                   (turn-cost constants form-data)
+                  [re-com/box
+                   :child "income"]
+                  (turn-income state form-data)
 
                   [re-com/box
                    :child "Sell"]
